@@ -3,6 +3,7 @@ const exphbs = require('express-handlebars')
 const fileUpload = require('express-fileupload')
 const { v4: uuidv4 } = require('uuid');
 var path = require('path')
+const flash = require('express-flash');
 
 const app = express();
 const port = process.env.PORT || 5000;
