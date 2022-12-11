@@ -4,8 +4,10 @@
   <input type="submit" class="btn btn-primary">
   </br>
   </br>
-  {{#if alert}}
-    <a href="{{alert}}">{{alert}}</a>
-    <a href="/">Voltar ao inicio</a>
+  {{#if message.success}}
+  <div class="alert alert-success">
+    <a href="{{message.success}}">{{message.success}}</a>
+  </div>
   {{/if}}
+
 </form>

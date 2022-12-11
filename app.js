@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload')
 const { v4: uuidv4 } = require('uuid');
 var path = require('path')
 const flash = require('express-flash');
+const session = require('express-session');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -11,6 +12,13 @@ const port = process.env.PORT || 5000;
 // Default option
 app.use(fileUpload());
 app.use('/upload', express.static('upload'));
+app.use(flash());
+app.use(session({
+	secret: "uwu",
+	resave: false,
+	saveUninitialized: false
+}))
+
 
 // Templating engine
 const handlebars = exphbs.create({extname: '.hbs'})
@@ -18,7 +26,11 @@ const handlebars = exphbs.create({extname: '.hbs'})
 app.engine('hbs', handlebars.engine)
 app.set('view engine', 'hbs')
 
-
+app.use((req, res, next) => {
+    res.locals.message = req.flash();
+    next();
+  });
+  
 app.get('/', (req,res) => {
     res.render('index')
 })
@@ -48,7 +60,8 @@ app.post('/', (req,res) => {
    sampleFile.mv(uploadPath, function(err){
     if(err) return res.status(500).send(err);
     let link = "http://localhost:5000/upload/" + nome_imagem
-    res.render('index', {alert: `${link}`})
+    req.flash('success', `${link}`);
+    res.redirect('/');
    })
 })
 
